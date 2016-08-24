@@ -14,9 +14,13 @@
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
     <script src="app.js"></script>
+    <script src="bower_components/everlive/src/everlive.all.js"></script>
+    <script src="dataProviders/gargiAappIo.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">></script>
 </head>
 
 <body id="kendoUiMobileApp">
+    <script src="components/scanPage/index.js"></script>
     <script src="components/home/index.js"></script>
     <div data-role="layout" data-id="main">
         <header data-role="header">
@@ -26,7 +30,8 @@
         </header>
         <footer data-role="footer">
             <div data-role="tabstrip" id="navigation-container">
-                <a href="components/home/view.html" data-icon="home">Home View</a>
+                <a href="components/home/view.html" data-icon="home">Sign In</a>
+                <a href="components/home/view.html?logout=true" data-position="end" data-icon="action">Sign Out</a>
             </div>
             <div id="navigation-container-more" style="display: none">
             </div>
