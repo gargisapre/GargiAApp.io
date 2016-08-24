@@ -1,0 +1,102 @@
+<!-- START_CUSTOM_CODE_scanPage -->
+<!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
+<div data-role="view" data-layout="main" data-model="app.scanPage" data-show="app.scanPage.onShow" data-after-show="app.scanPage.afterShow">
+    <link href="styles/main.css" rel="stylesheet">
+    <div class="row">
+        <!-- this sets up our scanner in a grid -->
+        <div style="color:white">
+            <!--this is the div that displays our username and says welcome -->
+            Welcome, <span style="color:white" data-bind="text: username"> </span>
+        </div>
+        <div class="col-md-12">
+            <!-- this is the div for the scanner -->
+            <div id="scanB" style="font-size: 3em;background:-webkit-linear-gradient(left top,#00BFA5,#00796B);color:white;box-shadow: 2px 2px grey;">Scan</div>
+        </div>
+    </div>
+    <div class="scanner">
+        <div class="row">
+            <!-- this is where your scanner values are displayed after you scan the QR code -->
+            <div class="col-md-12" style="width:100%;margin-top:10px">
+                <p id="p1" style="margin-top:10px;margin:0 auto;font-size: 1em;background:-webkit-linear-gradient(left top,#009688,#00BFA5);color:white"></p>
+            </div>
+            <div class="col-md-12" style="width:100%;margin-top:10px">
+                <p id="p2" style="margin-top:10px;margin:0 auto;font-size: 1em;background:-webkit-linear-gradient(left top,#009688,#00BFA5);color:white"></p>
+            </div>
+            <div class="col-md-12" style="width:100%;margin-top:10px">
+                <p id="p3" style="margin-top:10px;margin:0 auto;font-size: 1em;background:-webkit-linear-gradient(left top,#009688,#00BFA5);color:white"></p>
+            </div>
+            <div class="col-md-12" style="width:100%;margin-top:10px">
+                <!-- this is the confirm button to confirm the order -->
+                <button id="confirmButton" style="margin-top:10px;margin:0 auto;font-size: 1.5em;background:-webkit-linear-gradient(left top,#00796B,#00BFA5);color:white"></button>
+            </div>
+        </div>
+    </div>
+    <script>
+        //this is where the confirm button shows up once you click the scan button
+       
+        
+        
+        $(document).ready(function () {
+            $("#confirmButton").hide();
+            $("#scanB").click(function () {
+                $("#confirmButton").show();
+            });
+
+
+            $('#confirmButton').click(function () {
+                registerForPush();
+
+            });
+        });
+        //this just performs the scan 
+        document.addEventListener("deviceready", function () {
+            function orderNumber(string) { //order number
+                var x = 0;
+                var orderNum = "";
+                while (x !== -1) {
+                    if (string.charAt(x) !== '|' && x != string.length) {
+                        orderNum += string.charAt(x);
+                        x++;
+                    } else {
+                        x = -1;
+                    }
+                }
+                return orderNum;
+            };
+
+            function referenceNumber(string) { //reference number
+                var referenceNum = "";
+                var x = orderNumber(string).length + 1;
+                for (x; x < string.length; x++) {
+                    referenceNum += string.charAt(x);
+                }
+                return referenceNum;
+            }
+            var orNum = "";
+            var refNum = "";
+
+            function scanCode() {
+                cordova.plugins.barcodeScanner.scan(
+                    function (result) {
+                        if (!result.cancelled) {
+                            var x = result.text;
+                            document.getElementById("p1").innerHTML = "Your order number is: " + orderNumber(result.text);
+                            document.getElementById("p2").innerHTML = "Your reference number is: " + referenceNumber(result.text);
+                            document.getElementById("p3").innerHTML = "Click 'confirm' to continue";
+                            document.getElementById("confirmButton").innerHTML = "Confirm";
+                        }
+                    },
+                    function (error) {
+                        navigator.notification.alert("Unfortunately there was a problem reading the barcode.");
+                    }
+                );
+            }
+            document.querySelector("#scanB").addEventListener("click", function () {
+                scanCode();
+            });
+        });
+
+
+        <!-- END_CUSTOM_CODE_scanPage -->
+    </script>
+</div>
