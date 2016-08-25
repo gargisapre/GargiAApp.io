@@ -1,5 +1,6 @@
 'use strict';
 
+
 app.scanPage = kendo.observable({
     onShow: function () {},
     afterShow: function () {},

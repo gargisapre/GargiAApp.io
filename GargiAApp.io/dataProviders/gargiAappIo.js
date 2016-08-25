@@ -1,5 +1,6 @@
 'use strict';
 
+
 (function() {
     var provider = app.data.gargiAappIo = new Everlive({
             offlineStorage: true,
